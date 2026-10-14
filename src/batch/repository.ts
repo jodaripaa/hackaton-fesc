@@ -113,12 +113,13 @@ export const createBatchRepository: BatchRepositoryFactory = pool => {
         [jobId, workerId]);
       if (result.rowCount !== 1) throw new AppError(503, 'UNAVAILABLE');
     },
-    async readResults(jobId, identity) {
+    async readResults(jobId, identity, includePartial = true) {
       // One statement gives a consistent status/results snapshot and owner check.
       const result = await query<{ status: BatchStatus; results: BatchRowResult[] }>(
-        `SELECT job.status, COALESCE((SELECT jsonb_agg(result_row.payload ORDER BY result_row.row_index)
-           FROM caja_link.batch_results AS result_row WHERE result_row.job_id = job.job_id), '[]'::jsonb) AS results
-         FROM caja_link.batch_jobs AS job WHERE job.job_id = $1 AND job.requesting_caja = $2`, [jobId, identity.caja]);
+        `SELECT job.status, CASE WHEN job.status <> 'DONE' AND NOT $3::boolean THEN '[]'::jsonb
+           ELSE COALESCE((SELECT jsonb_agg(result_row.payload ORDER BY result_row.row_index)
+             FROM caja_link.batch_results AS result_row WHERE result_row.job_id = job.job_id), '[]'::jsonb) END AS results
+         FROM caja_link.batch_jobs AS job WHERE job.job_id = $1 AND job.requesting_caja = $2`, [jobId, identity.caja, includePartial]);
       return result.rows[0] ?? null;
     },
     async recoverInterrupted() {

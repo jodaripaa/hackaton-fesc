@@ -119,7 +119,8 @@ export interface BatchRepository {
   claimPending(): Promise<BatchJob | null>;
   saveResults(jobId: string, results: readonly BatchRowResult[]): Promise<void>;
   complete(jobId: string): Promise<void>;
-  readResults(jobId: string, identity: ConsumerIdentity): Promise<BatchResponse | null>;
+  /** Partial rows are for recovery; public polling can defer their aggregation until DONE. */
+  readResults(jobId: string, identity: ConsumerIdentity, includePartial?: boolean): Promise<BatchResponse | null>;
   recoverInterrupted(): Promise<number>;
 }
 export interface BatchService {

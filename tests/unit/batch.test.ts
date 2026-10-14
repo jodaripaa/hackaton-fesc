@@ -396,6 +396,8 @@ test('lote_postgres_idempotencia_atomica_leases_orden_propiedad_y_recuperacion',
       const first: BatchRowResult = { document: normalizeDocument('1234'), requestId: randomUUID(), result: 'NO_AFILIADO', matches: [], unavailable: [] };
       await assert.rejects(rival.saveResults(jobId, [first]), error => error instanceof AppError && error.statusCode === 503);
       await owning.saveResults(jobId, [first]);
+      assert.equal((await owning.readResults(jobId, owner, false))?.results.length, 0);
+      assert.equal((await owning.readResults(jobId, owner))?.results.length, 1);
       await assert.rejects(owning.complete(jobId), error => error instanceof AppError && error.statusCode === 503);
       await pool.query("UPDATE caja_link.batch_jobs SET lease_until = clock_timestamp() - interval '1 second' WHERE job_id = $1", [jobId]);
       await assert.rejects(owning.saveResults(jobId, [first]), error => error instanceof AppError && error.statusCode === 503);
@@ -410,6 +412,7 @@ test('lote_postgres_idempotencia_atomica_leases_orden_propiedad_y_recuperacion',
         { ...first, requestId: randomUUID() },
       ]);
       await rival.complete(jobId);
+      assert.equal((await rival.readResults(jobId, owner, false))?.results.length, 3);
       assert.equal((await rival.readResults(jobId, owner))?.status, 'DONE');
       assert.deepEqual((await rival.readResults(jobId, owner))?.results.map(row => row.document), ['1234', '5678', '1234']);
     } finally { await guard.query('ROLLBACK'); guard.release(); }

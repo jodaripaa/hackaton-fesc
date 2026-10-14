@@ -101,7 +101,7 @@ export const createBatchService: BatchServiceFactory = options => {
       wake?.();
       return accepted;
     },
-    async get(jobId, identity) { return options.repository.readResults(jobId, identity); },
+    async get(jobId, identity) { return options.repository.readResults(jobId, identity, false); },
     async start() {
       if (startup) return startup;
       if (controller && !controller.signal.aborted) return;
