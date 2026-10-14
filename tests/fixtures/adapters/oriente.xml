@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:a="http://cajaoriente.example/afiliacion">
+  <s:Body>
+    <a:ConsultarAfiliacionResponse>
+      <a:Encontrado>true</a:Encontrado>
+      <a:Persona>
+        <a:NumeroDocumento>000.123.456.789</a:NumeroDocumento>
+        <a:NombreCompleto>Persona &amp; prueba privada</a:NombreCompleto>
+        <a:Telefono>NO_PUBLICAR</a:Telefono>
+        <a:Direccion>NO_PUBLICAR</a:Direccion>
+        <a:Afiliaciones>
+          <a:Afiliacion><a:FechaIngreso>29/02/2024</a:FechaIngreso><a:FechaRetiro/><a:TipoAfiliado>D</a:TipoAfiliado></a:Afiliacion>
+          <a:Afiliacion><a:FechaIngreso>01/01/2020</a:FechaIngreso><a:FechaRetiro>31/12/2022</a:FechaRetiro><a:TipoAfiliado>I</a:TipoAfiliado></a:Afiliacion>
+          <a:Afiliacion><a:FechaIngreso>01/01/2027</a:FechaIngreso><a:FechaRetiro/><a:TipoAfiliado>P</a:TipoAfiliado></a:Afiliacion>
+        </a:Afiliaciones>
+      </a:Persona>
+    </a:ConsultarAfiliacionResponse>
+  </s:Body>
+</s:Envelope>
