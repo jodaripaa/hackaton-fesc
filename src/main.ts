@@ -3,11 +3,35 @@ import { buildApp } from './app.ts';
 import { ConfigurationError, loadConfig } from './config/index.ts';
 import { createPostgresConnection } from './persistence/connection.ts';
 import { runMigrations } from './persistence/migrations.ts';
+import { createAdapters } from './adapters/index.ts';
+import { createAffiliationService } from './application/affiliations.ts';
+import { createAuditRepository } from './audit/repository.ts';
+import { createSecurity } from './security/index.ts';
+import { createAffiliationRoutes } from './routes/affiliations.ts';
+import { createAuditRoutes } from './routes/audit.ts';
+import { createBatchRepository } from './batch/repository.ts';
+import { createBatchService } from './batch/service.ts';
+import { createBatchRoutes } from './routes/batch.ts';
 
 export async function start(): Promise<void> {
   const config = loadConfig();
   const persistence = createPostgresConnection(config.database);
-  const app = buildApp({ config, persistence });
+  const adapters = createAdapters(config.cajas, config.query);
+  const expected = config.cajas.filter(caja => caja.enabled).map(caja => caja.id).sort();
+  if (JSON.stringify(adapters.map(adapter => adapter.caja).sort()) !== JSON.stringify(expected)) throw new Error('Missing enabled adapter');
+  const security = createSecurity(config.auth);
+  const audit = createAuditRepository(persistence.pool);
+  const affiliations = createAffiliationService({ adapters, query: config.query, audit });
+  const batches = createBatchService({
+    repository: createBatchRepository(persistence.pool), affiliations,
+    batch: config.batch, query: config.query,
+  });
+  const app = buildApp({ config, persistence, modules: {
+    affiliations: createAffiliationRoutes({ service: affiliations, security }),
+    audit: createAuditRoutes({ repository: audit, security }),
+    batch: createBatchRoutes({ service: batches, security, batch: config.batch }),
+  } });
+  app.addHook('onClose', async () => { await Promise.all(adapters.map(adapter => adapter.close?.())); });
   try {
     await runMigrations(persistence.pool);
     await app.listen({ host: config.server.host, port: config.server.port });
