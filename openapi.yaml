@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  title: Caja Link
+  version: 0.1.0
+  description: >-
+    Contrato inicial Profesional. Las cinco operaciones de negocio están pendientes
+    de integración; esta base solo sirve health y readiness. La tarea 07 completará
+    este documento contrastándolo con la implementación y las pruebas finales.
+servers:
+  - url: http://localhost:8083
+security:
+  - bearerAuth: []
+paths:
+  /api/v1/affiliations/{document}:
+    get:
+      operationId: queryAffiliationV1
+      x-implementation-status: pending
+      description: Consulta de consumidor; excluye su caja. ADMIN_TOKEN no representa una caja consultante.
+      parameters:
+        - $ref: '#/components/parameters/Document'
+        - $ref: '#/components/parameters/Purpose'
+      responses:
+        '200':
+          description: Resultado mínimo; NO_AFILIADO solo con ausencia confirmada en todos los orígenes requeridos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffiliationResponseV1'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /api/v2/affiliations/{document}:
+    get:
+      operationId: queryAffiliationV2
+      x-implementation-status: pending
+      description: Misma consulta que v1 con affiliateType en cada coincidencia.
+      parameters:
+        - $ref: '#/components/parameters/Document'
+        - $ref: '#/components/parameters/Purpose'
+      responses:
+        '200':
+          description: Resultado canónico versión 2.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffiliationResponseV2'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /api/v1/batch-checks:
+    post:
+      operationId: submitBatch
+      x-implementation-status: pending
+      description: >-
+        CSV UTF-8 con columna document, hasta BATCH_MAX_DOCUMENTS filas. Finalidad
+        ausente usa VALIDACION_AFILIACION y se audita así. Clave única por consumidor;
+        mismo contenido devuelve el mismo jobId; contenido diferente devuelve 409.
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+        - in: query
+          name: purpose
+          required: false
+          schema:
+            $ref: '#/components/schemas/Purpose'
+      requestBody:
+        required: true
+        content:
+          text/csv:
+            schema:
+              type: string
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              additionalProperties: false
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: Trabajo aceptado, pendiente o previamente creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchAccepted'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Clave reutilizada para contenido o finalidad diferentes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Cuerpo o número de documentos excede el límite configurado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '415':
+          description: Tipo de contenido no admitido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /api/v1/batch-checks/{jobId}:
+    get:
+      operationId: getBatch
+      x-implementation-status: pending
+      description: Solo el consumidor dueño puede leer el trabajo. Resultados v1 en orden de filas.
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Estado persistente y resultados disponibles; PENDING puede tener results vacío.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponse'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Trabajo inexistente o no visible para el consumidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /api/v1/audit:
+    get:
+      operationId: listAudit
+      x-implementation-status: pending
+      description: Solo ADMIN_TOKEN. Devuelve un array, con entradas más recientes primero.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+      responses:
+        '200':
+          description: Trazabilidad con un máximo de cuatro dígitos visibles por documento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEntry'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /health:
+    get:
+      operationId: health
+      security: []
+      description: Liveness del proceso; no comprueba los orígenes.
+      responses:
+        '200':
+          description: Proceso disponible.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    const: ok
+  /ready:
+    get:
+      operationId: ready
+      security: []
+      description: PostgreSQL disponible tras migraciones aplicadas al arrancar; no afirma negocio completo.
+      responses:
+        '200':
+          description: Infraestructura base lista.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status, database]
+                properties:
+                  status:
+                    type: string
+                    const: ready
+                  database:
+                    type: string
+                    const: up
+        '503':
+          $ref: '#/components/responses/Unavailable'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Token opaco del entorno; cuatro identidades consumidoras y una administrativa.
+  parameters:
+    Document:
+      name: document
+      in: path
+      required: true
+      description: Dígitos, puntos y espacios; se quitan separadores y ceros de relleno.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+    Purpose:
+      name: purpose
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/Purpose'
+  responses:
+    InvalidRequest:
+      description: Documento, finalidad u otra entrada inválida o faltante.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Token ausente o inválido.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Identidad sin permiso para la operación.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unavailable:
+      description: Dependencia propia indispensable no disponible; las fallas de cajas se expresan en unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    CajaId:
+      type: string
+      enum: [NORTE, ORIENTE, CENTRO, SUR]
+    Purpose:
+      type: string
+      enum: [TARIFA_SUBSIDIADA, SUBSIDIO_MONETARIO, VALIDACION_AFILIACION]
+    AffiliationResult:
+      type: string
+      enum: [AFILIADO_OTRA_CAJA, NO_AFILIADO, INDETERMINADO]
+    MatchV1:
+      type: object
+      additionalProperties: false
+      required: [caja, validFrom, validTo, source, asOf]
+      properties:
+        caja:
+          $ref: '#/components/schemas/CajaId'
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: [string, 'null']
+          format: date
+        source:
+          type: string
+          enum: [ONLINE, FILE]
+        asOf:
+          type: string
+          format: date
+    MatchV2:
+      type: object
+      additionalProperties: false
+      required: [caja, validFrom, validTo, source, asOf, affiliateType]
+      properties:
+        caja:
+          $ref: '#/components/schemas/CajaId'
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: [string, 'null']
+          format: date
+        source:
+          type: string
+          enum: [ONLINE, FILE]
+        asOf:
+          type: string
+          format: date
+        affiliateType:
+          type: string
+          enum: [DEPENDIENTE, INDEPENDIENTE, PENSIONADO]
+    AffiliationResponseV1:
+      type: object
+      additionalProperties: false
+      required: [requestId, result, matches, unavailable]
+      properties:
+        requestId:
+          type: string
+          minLength: 1
+        result:
+          $ref: '#/components/schemas/AffiliationResult'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchV1'
+        unavailable:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CajaId'
+    AffiliationResponseV2:
+      type: object
+      additionalProperties: false
+      required: [requestId, result, matches, unavailable]
+      properties:
+        requestId:
+          type: string
+          minLength: 1
+        result:
+          $ref: '#/components/schemas/AffiliationResult'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchV2'
+        unavailable:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CajaId'
+    BatchAccepted:
+      type: object
+      additionalProperties: false
+      required: [jobId]
+      properties:
+        jobId:
+          type: string
+          format: uuid
+    BatchRow:
+      type: object
+      additionalProperties: false
+      required: [document, requestId, result, matches, unavailable]
+      properties:
+        document:
+          type: string
+          pattern: '^[0-9]+$'
+        requestId:
+          type: string
+          minLength: 1
+        result:
+          $ref: '#/components/schemas/AffiliationResult'
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchV1'
+        unavailable:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/CajaId'
+    BatchResponse:
+      type: object
+      additionalProperties: false
+      required: [status, results]
+      properties:
+        status:
+          type: string
+          enum: [PENDING, RUNNING, DONE]
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchRow'
+    AuditEntry:
+      type: object
+      additionalProperties: false
+      required: [timestamp, requestingCaja, purpose, result, documentMasked]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        requestingCaja:
+          $ref: '#/components/schemas/CajaId'
+        purpose:
+          $ref: '#/components/schemas/Purpose'
+        result:
+          $ref: '#/components/schemas/AffiliationResult'
+        documentMasked:
+          type: string
+          pattern: '^[^0-9]*[0-9]{0,4}$'
+          minLength: 1
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error, requestId]
+      properties:
+        error:
+          type: string
+          enum: [INVALID_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, CONFLICT, UNAVAILABLE, INTERNAL_ERROR]
+        requestId:
+          type: string
+          minLength: 1

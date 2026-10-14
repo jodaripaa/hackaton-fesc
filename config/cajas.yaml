@@ -1,0 +1,22 @@
+version: 1
+cajas:
+  - id: NORTE
+    protocol: REST_NORTE
+    enabled: true
+    baseUrlEnv: CAJA_NORTE_URL
+    apiKeyEnv: CAJA_NORTE_API_KEY
+  - id: ORIENTE
+    protocol: SOAP_ORIENTE
+    enabled: true
+    endpointEnv: CAJA_ORIENTE_URL
+    usernameEnv: CAJA_ORIENTE_USER
+    passwordEnv: CAJA_ORIENTE_PASSWORD
+  - id: CENTRO
+    protocol: FILE_CENTRO
+    enabled: true
+    directoryEnv: CAJA_CENTRO_DIR
+  - id: SUR
+    protocol: REST_SUR
+    enabledEnv: CAJA_SUR_ENABLED
+    baseUrlEnv: CAJA_SUR_URL
+    tokenEnv: CAJA_SUR_TOKEN

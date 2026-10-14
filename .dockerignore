@@ -1,0 +1,15 @@
+# Team image build uses an allowlist so box internals, secrets and coordination never enter it.
+**
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.test.json
+!src/
+!src/**
+!tests/
+!tests/**
+!scripts/
+!scripts/**
+!config/
+!config/**
+!openapi.yaml

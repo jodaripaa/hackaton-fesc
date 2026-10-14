@@ -1,1 +1,9 @@
 .env
+.env.*
+!.env.example
+node_modules/
+dist/
+test-results/
+coverage/
+*.log
+.DS_Store

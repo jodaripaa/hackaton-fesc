@@ -33,13 +33,58 @@ services:
     ports:
       - "${CAJA_SUR_PORT:-9004}:9004"
 
-  # Agreguen aquí su servicio de interoperabilidad (puerto de contrato 8083).
-  # Caja Centro no tiene servicio: monten ./caja-centro (archivo plano diario).
-  # caja-link:
-  #   build: ./src
-  #   env_file: .env
-  #   ports:
-  #     - "8083:8083"
-  #   volumes:
-  #     - ./caja-centro:/data/caja-centro:ro
-  #     - ./config:/app/config:ro
+  postgres:
+    image: postgres:17.6-bookworm
+    environment:
+      POSTGRES_DB: ${PGDATABASE:?Define PGDATABASE en .env}
+      POSTGRES_USER: ${PGUSER:?Define PGUSER en .env}
+      POSTGRES_PASSWORD: ${PGPASSWORD:?Define PGPASSWORD en .env}
+    volumes:
+      - caja-link-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  caja-link:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: "8083"
+      PGHOST: postgres
+      PGPORT: "5432"
+      CAJAS_CONFIG_PATH: /app/config/cajas.yaml
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./caja-centro:/data/caja-centro:ro
+      - ./config:/app/config:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    init: true
+    stop_grace_period: 15s
+
+  tests:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    env_file: .env
+    environment:
+      TEST_SERVICE_URL: http://caja-link:8083
+      TEST_DATABASE: "true"
+      PGHOST: postgres
+      PGPORT: "5432"
+    volumes:
+      - ./test-results:/app/test-results
+    depends_on:
+      caja-link:
+        condition: service_healthy
+
+volumes:
+  caja-link-postgres:
