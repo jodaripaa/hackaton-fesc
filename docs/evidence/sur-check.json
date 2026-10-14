@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-14T16:01:40.675Z",
+  "checks": [
+    "Healthy Sur is consulted through configured REST origin",
+    "v1 does not expose affiliateType",
+    "Sur with no current membership does not create a match",
+    "Unavailable configured Sur prevents false NO_AFILIADO",
+    "Sur consumer excludes its own origin even during failure"
+  ],
+  "passed": 5,
+  "activeMembershipObserved": false
+}

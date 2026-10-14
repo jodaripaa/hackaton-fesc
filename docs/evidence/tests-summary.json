@@ -1,0 +1,18 @@
+{
+  "capturedAt": "2026-10-14T16:40:40.0920592Z",
+  "sourceRevision": "71394a62c6327fcf29a024fc88059a7ee91ec258",
+  "junitCases": 167,
+  "junitPassed": 165,
+  "junitFailed": 0,
+  "junitSkipped": 2,
+  "nodeTestsPassed": 169,
+  "nodeTestsSkipped": 2,
+  "command": "docker compose --profile test run --rm --build -e TEST_ENABLE_CHAOS=true tests",
+  "mitigationTests": [
+    "test_consulta_sin_token_responde_401",
+    "test_finalidad_ausente_o_invalida_responde_400",
+    "test_respuestas_solo_contienen_dato_minimo",
+    "test_secretos_no_se_exponen_en_logs_y_errores",
+    "test_auditoria_exclusiva_y_documento_enmascarado"
+  ]
+}

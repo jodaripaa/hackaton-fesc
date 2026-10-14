@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-14T16:57:27.145Z",
+  "source": "wholly synthetic REST Sur fixture",
+  "configurationOnly": true,
+  "checks": [
+    "positive membership through complete service",
+    "minimum v1 DTO",
+    "v2 category mapping",
+    "normalization",
+    "own caja exclusion"
+  ],
+  "passed": 5,
+  "officialP14Executed": false
+}

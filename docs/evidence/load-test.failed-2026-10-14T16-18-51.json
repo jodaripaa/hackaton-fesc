@@ -1,0 +1,30 @@
+{
+  "herramienta": "Node.js 24 fetch + referencia independiente de interfaces públicas",
+  "runtime": "v24.21.0",
+  "csv_sha256": "8dcc0e0c0d61f2712d6c7d1fd714c1ead57db0d3638c9f1362629688082b82dd",
+  "documentos": 10000,
+  "documentos_unicos": 10000,
+  "duracion_segundos": 89.011140079,
+  "errores": 1,
+  "filas_recibidas": 0,
+  "filas_verificadas": 0,
+  "filas_erroneas": 0,
+  "errores_http": 1,
+  "consultas_durante_lote": 34,
+  "consulta_max_ms": 408.66715400000976,
+  "preparacion_segundos": 43.924018392,
+  "verificacion_segundos": null,
+  "caja_consumidora": "CENTRO",
+  "cajas_habilitadas": [
+    "NORTE",
+    "ORIENTE",
+    "CENTRO"
+  ],
+  "fecha_corte": "2026-10-14",
+  "centro_asOf": "2026-10-03",
+  "inicio_utc": "2026-10-14T16:17:22.412Z",
+  "final_utc": "2026-10-14T16:18:51.412Z",
+  "estado": "RUNNING",
+  "aprobada": false,
+  "jobId": "60c2d6e9-753d-4653-842c-37ed6e24e02f"
+}

@@ -1,0 +1,18 @@
+Extracto de la ejecución real de python validator check --lote, 14 de octubre de 2026.
+Salida del proceso: 0.
+P01 Autenticacion: PASS
+P02 Finalidad: PASS
+P03 Resultados: PASS
+P04 Normalizacion: PASS
+P05 Exclusion consultante: PASS
+P06 Dato minimo: PASS
+P07 Caja caida: PASS
+P08 Caja lenta: PASS
+P09 Fuente por archivo: PASS
+P10 Lote: PASS, DONE en 55 s con 10000 resultados.
+P11 Idempotencia lote: PASS
+P12 Versionado: PASS
+P13 Auditoria: PASS, 100 entradas completas y enmascaradas.
+P14 Cuarta caja: N/E, solo evaluador oficial.
+PRUEBAS: 13 / 14. PUNTOS: 460 / 500.
+Límites del validador público: P06 revisa claves; P10 no compara exactitud de resultados.

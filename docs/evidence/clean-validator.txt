@@ -1,0 +1,24 @@
+========================================
+          CAJA LINK VALIDATOR
+========================================
+P01 Autenticacion ........... PASS     +30
+P02 Finalidad ............... PASS     +30
+P03 Resultados .............. PASS     +70
+P04 Normalizacion ........... PASS     +20
+P05 Exclusion consultante ... PASS     +20
+P06 Dato minimo ............. PASS     +40
+P07 Caja caida .............. PASS     +60
+P08 Caja lenta .............. PASS     +30
+P09 Fuente por archivo ...... PASS     +30
+P10 Lote .................... PASS     +60
+P11 Idempotencia lote ....... PASS     +20
+P12 Versionado .............. PASS     +30
+P13 Auditoria ............... PASS     +20
+P14 Cuarta caja ............. N/E       +0
+----------------------------------------
+PRUEBAS: 13 / 14   PUNTOS: 460 / 500
+N/E = no evaluada aqu� (P10-P11 con --lote; P14 solo oficial)
+
+  P06: Solo claves (el oficial tambi�n busca valores personales)
+  P10: DONE en 134 s con 10000 resultados (la exactitud la revisa el oficial)
+  P13: 14 entradas, 14 completas, 14 enmascaradas

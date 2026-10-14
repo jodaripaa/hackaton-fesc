@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 
-process.loadEnvFile('.env');
+if (existsSync('.env')) process.loadEnvFile('.env');
+const base = process.env.TEST_SERVICE_URL || 'http://127.0.0.1:8083';
 const document = '999999999999';
 const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota' }).format(new Date());
 const query = async (version, caja, input = document) => {
-  const response = await fetch(`http://127.0.0.1:8083/api/${version}/affiliations/${encodeURIComponent(input)}?purpose=VALIDACION_AFILIACION`, {
+  const response = await fetch(new URL(`/api/${version}/affiliations/${encodeURIComponent(input)}?purpose=VALIDACION_AFILIACION`, base), {
     headers: { Authorization: `Bearer ${process.env[`${caja}_TOKEN`]}` }, signal: AbortSignal.timeout(4900),
   });
   assert.equal(response.status, 200);

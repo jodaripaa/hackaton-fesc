@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-14T16:53:41.9501581Z",
+  "sourceRevision": "71394a62c6327fcf29a024fc88059a7ee91ec258",
+  "cleanExport": true,
+  "environment": ".env.example unchanged",
+  "newIndependentPostgresVolume": true,
+  "command": "docker compose up -d --build",
+  "validatorCommand": "python validator check --lote",
+  "validatorExitCode": 0,
+  "passedControls": 13,
+  "officialP14Executed": false,
+  "publicBatchSeconds": 134,
+  "publicBatchRows": 10000,
+  "registryRetry": "First attempt: Docker Hub TLS timeout; second attempt built and started successfully."
+}
