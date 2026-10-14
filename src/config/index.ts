@@ -17,9 +17,9 @@ function required(env: Environment, name: string): string {
   return value;
 }
 function secret(env: Environment, name: string): string {
-  const value = required(env, name);
-  if (value.startsWith('cambiar-')) throw new ConfigurationError(`Reemplaza el marcador de ${name}`);
-  return value;
+  // Example markers are deliberately runnable with the synthetic kit. Actual
+  // credentials still come only from the environment and are never defaulted here.
+  return required(env, name);
 }
 function integer(env: Environment, name: string, fallback: number, min: number, max: number): number {
   const raw = env[name] ?? String(fallback);

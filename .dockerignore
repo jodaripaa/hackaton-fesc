@@ -13,3 +13,7 @@
 !config/
 !config/**
 !openapi.yaml
+!.validator.json
+!data/
+!data/lote_10000.csv
+!.env.example

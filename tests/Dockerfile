@@ -8,5 +8,8 @@ COPY tests ./tests
 COPY scripts ./scripts
 COPY config ./config
 COPY openapi.yaml ./
+COPY .validator.json ./
+COPY .env.example ./
+COPY data/lote_10000.csv ./data/lote_10000.csv
 RUN npm run build && npm run typecheck
 CMD ["npm", "run", "test:junit"]

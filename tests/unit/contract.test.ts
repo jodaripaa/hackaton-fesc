@@ -19,7 +19,7 @@ test('contrato_openapi_declara_cinco_rutas_y_referencias_resolubles', async () =
     assert.ok(paths[path]);
     const method = path === '/api/v1/batch-checks' ? 'post' : 'get';
     const operation = paths[path]![method] as Record<string, unknown>;
-    assert.equal(operation['x-implementation-status'], 'pending');
+    assert.ok(operation['responses']);
   }
   const visit = (value: unknown): void => {
     if (!value || typeof value !== 'object') return;

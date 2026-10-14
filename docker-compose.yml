@@ -82,6 +82,7 @@ services:
       PGPORT: "5432"
     volumes:
       - ./test-results:/app/test-results
+      - ./caja-centro:/data/caja-centro:ro
     depends_on:
       caja-link:
         condition: service_healthy

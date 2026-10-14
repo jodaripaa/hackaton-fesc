@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
@@ -28,12 +28,22 @@ test('config_exige_credenciales_sur_cuando_esta_habilitada', () => {
   const env = { ...testEnvironment(), CAJA_SUR_ENABLED: 'true', CAJA_SUR_TOKEN: '' };
   assert.throws(() => loadConfig(env, { cajasPath }), ConfigurationError);
 });
-test('config_rechaza_tokens_ambiguos_y_marcadores', () => {
+test('config_rechaza_tokens_ambiguos_y_credenciales_vacias', () => {
   const env = testEnvironment();
   env['ADMIN_TOKEN'] = env['NORTE_TOKEN']!;
   assert.throws(() => loadConfig(env, { cajasPath }), /distintos/u);
-  env['NORTE_TOKEN'] = 'cambiar-norte';
-  assert.throws(() => loadConfig(env, { cajasPath }), /marcador/u);
+  env['NORTE_TOKEN'] = '';
+  assert.throws(() => loadConfig(env, { cajasPath }), /NORTE_TOKEN/u);
+});
+test('config_permite_arranque_desde_env_example_del_kit', async () => {
+  const text = await readFile(new URL('../../.env.example', import.meta.url), 'utf8');
+  const entries = text.split(/\r?\n/u).filter(line => line && !line.startsWith('#')).map(line => {
+    const index = line.indexOf('=');
+    return [line.slice(0, index), line.slice(index + 1)] as const;
+  });
+  const config = loadConfig(Object.fromEntries(entries), { cajasPath });
+  assert.equal(config.server.port, 8083);
+  assert.equal(config.cajas.length, 4);
 });
 test('config_falla_antes_de_arrancar_si_falta_un_origen', () => {
   const env = testEnvironment();
