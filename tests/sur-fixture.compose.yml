@@ -1,0 +1,15 @@
+# Optional positive-case QA. Run with docker-compose.yml as the first file.
+services:
+  sur-fixture:
+    image: node:24.21.0-bookworm-slim
+    env_file: .env
+    command: ["node", "/fixtures/server.mjs"]
+    volumes:
+      - ./tests/fixtures/sur:/fixtures:ro
+  caja-link:
+    environment:
+      CAJA_SUR_ENABLED: "true"
+      CAJA_SUR_URL: http://sur-fixture:9004
+    depends_on:
+      sur-fixture:
+        condition: service_started
