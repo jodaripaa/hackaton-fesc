@@ -1,0 +1,17 @@
+========================================================================
+     ENTREGABLES — revisión con las reglas del calificador oficial
+========================================================================
+PE01 ADR ........................................ PASS     4.00 / 4
+PE02 Modelo de amenazas con pruebas ............. PASS     5.00 / 5
+PE03 Pruebas automatizadas (último resultado en t PASS     3.00 / 3
+PE04 Prueba de carga documentada ................ PASS     2.00 / 2
+PE05 Cajas por configuración .................... PASS     3.00 / 3
+PE06 Contrato OpenAPI v1 y v2 ................... PASS     2.00 / 2
+PE07 Documento de arquitectura .................. PASS     1.00 / 1
+PE08 Historial Git .............................. PASS     1.00 / 1
+PE09 AI_USAGE.md ................................ PASS     2.00 / 2
+PE11 README: documentación del software ......... PASS     2.00 / 2
+------------------------------------------------------------------------
+PUNTOS: 25.00 / 25
+No se revisa aquí: PE10 Pitch de 1 minuto (se registra en Mi equipo: video público de Drive de 60 s o menos; el comité revisa el contenido)
+Las pruebas se leen del último test-results/; el oficial las ejecuta con: docker compose --profile test run --rm tests

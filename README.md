@@ -7,7 +7,7 @@ Caja Link permite a una caja de compensación consultar si una persona tiene afi
 ## Integrantes
 
 - Josue Palomino — usuario de GitHub: `jodaripaa`.
-- Andres Rodriguez — correo informado de su cuenta de GitHub: `art_fr_gallego@fesc.edu.co`. Su identidad para autoría de commits sigue pendiente de confirmación.
+- Andres Rodriguez — autoría registrada como `Andres Rodriguez <art_fr_gallego@fesc.edu.co>`. El usuario confirmó que pruebas, rendimiento y seguridad le pertenecían y solicitó corregir esos commits.
 
 ## Requisitos
 
@@ -172,13 +172,19 @@ $env:PYTHONIOENCODING = 'utf-8'
 python -B validator entregables --desde 2026-10-14T10:00:00-05:00
 ```
 
-La revisión documental comprobó once secciones exactas, 36 variables, seis servicios, cuatro ADR y enlaces locales existentes. La suite incluye pruebas de contrato y referencias OpenAPI resolubles. La carga está medida y documentada; falta completar el historial real de ambos integrantes. PE10 se comprueba en la plataforma.
+La revisión documental comprobó once secciones exactas, 36 variables, seis servicios, cuatro ADR y enlaces locales existentes. La suite incluye pruebas de contrato y referencias OpenAPI resolubles. La carga está medida y documentada; el historial ahora registra a ambos integrantes tras la corrección solicitada. PE10 se comprueba en la plataforma.
 
-El JUnit único generado en `test-results/junit.xml`, repetido después de la corrección de lotes, contiene 165 casos aprobados, cero fallidos y dos omitidos de Sur. El [resumen conservado](docs/evidence/tests-summary.json) registra los conteos y los cinco nombres de mitigación aprobados. El resumen node:test muestra 169 aprobaciones; para PE03 se cuentan los elementos testcase del XML. El [validador público con lote](docs/evidence/validator-check.txt) aprobó P01–P13, 13/14 controles y 460/500 puntos; P14 N/E, exclusivo del oficial. P10 informó DONE en 55 segundos con 10000 resultados y P13 revisó 100 entradas completas y enmascaradas. Ese validador no contrasta exactitud del lote; la referencia independiente sí.
+La ejecución original del 14 de octubre, repetida después de la corrección de lotes, tuvo 165 casos JUnit aprobados, cero fallidos y dos omitidos de Sur. El [resumen conservado](docs/evidence/tests-summary.json) registra los conteos y los cinco nombres de mitigación aprobados. El resumen node:test mostró 169 aprobaciones; para PE03 se cuentan los elementos testcase del XML. El [validador público con lote](docs/evidence/validator-check.txt) aprobó P01–P13, 13/14 controles y 460/500 puntos; P14 N/E, exclusivo del oficial. P10 informó DONE en 55 segundos con 10000 resultados y P13 revisó 100 entradas completas y enmascaradas. Ese validador no contrasta exactitud del lote; la referencia independiente sí.
+
+La [validación del rework del 15 de octubre](docs/evidence/rework-tests-summary.json) añadió cuatro pruebas de Sur con HTTP sintético, configuración, dominio, seguridad y rutas reales, sin acceder a datasets internos. La ejecución completa repetida aprobó 173 pruebas según Node y 169 casos JUnit, con cero fallos y dos omitidos del origen Sur original. El runner limita las suites a dos procesos: la primera ejecución paralela había reportado un 503 y un timeout SQL; los presupuestos de la API y las aserciones se conservaron. Las pruebas adicionales cubren activación al recrear, contrato v1/v2, normalización, auditoría, exclusión del consumidor, caída, lentitud y recuperación.
+
+La [revisión de entregables del rework](docs/evidence/entregables-rework.txt) aprobó PE01–PE09 y PE11 con **25/25**, incluido el historial Git corregido. PE10, el pitch, se verifica aparte en la plataforma y no está incluido en esos 25 puntos.
 
 La [medición independiente aprobada](docs/evidence/load-test.json) terminó DONE en **62,658 segundos**, con **10000 filas recibidas y verificadas y cero errores**. Durante el lote se atendieron 41 consultas individuales, con máximo observado de 356,388 ms. El CSV tenía 10000 documentos únicos; orden y campos completos se verificaron por fila. Duplicados e idempotencia están cubiertos por pruebas específicas. Preparación de referencia (36,681 s) y comparación posterior (0,312 s) se midieron aparte. La primera carga fallida y su corrección se conservan en [load-test.md](docs/load-test.md).
 
 Sur tiene [cinco comprobaciones con el origen original](docs/evidence/sur-check.json) y [cinco positivas con un fixture completamente sintético](docs/evidence/sur-fixture-check.json). El segundo comprobó coincidencia completa, DTO v1 mínimo, tipo v2 INDEPENDIENTE, normalización y exclusión del consumidor Sur. La repetición dentro de Docker aprobó los mismos cinco controles con salida 0, sin Node.js local. Cambió solo configuración, sin leer datos internos. Esta evidencia propia complementa los dos casos omitidos del JUnit; **P14 oficial no se ha ejecutado**.
+
+El [fixture ampliado del rework](docs/evidence/sur-fixture-rework-check.json) aprobó nueve controles en Docker: los cinco anteriores, caída y lentitud sin falso negativo dentro del presupuesto, exclusión del consumidor ante falla y recuperación. El Compose opcional inyecta SUR_FIXTURE_URL solo al servicio tests; el checker restaura el origen sintético en finally. Estas comprobaciones adicionales tampoco son el P14 oficial.
 
 El [arranque limpio](docs/evidence/clean-start.json) se comprobó sobre la exportación funcional 71394a6, con .env.example sin cambios y PostgreSQL nuevo en otro proyecto Compose. El primer build falló por timeout TLS de Docker Hub; el segundo construyó las tres imágenes y arrancó correctamente. En esa copia, [validator check --lote](docs/evidence/clean-validator.txt) terminó con salida 0 y P01–P13 PASS (460/500); su lote llegó a DONE en 134 segundos con 10000 filas. Es otra ejecución del validador público, sin la comparación independiente de exactitud de 62,658 segundos.
 
@@ -192,6 +198,8 @@ El [arranque limpio](docs/evidence/clean-start.json) se comprobó sobre la expor
 - [Configuración de cajas](config/cajas.yaml).
 - [Uso de inteligencia artificial](AI_USAGE.md).
 - [Guion de pitch y checklist](docs/pitch.md).
+- [Corrección de autoría confirmada por el usuario](docs/authorship-correction.md).
+- [Trazabilidad del historial técnico normalizado](docs/evidence/history-cleanup.json).
 - [Evidencias conservadas: carga, Sur, pruebas y arranque limpio](docs/evidence/).
 - [Contrato compartido de implementación](docs/implementation-contract.md).
 
@@ -201,4 +209,4 @@ Se implementaron adaptadores REST, SOAP y archivo, consultas versionadas, seguri
 
 ## Limitaciones y pendientes
 
-P14 oficial no se ha ejecutado. La carga independiente mantuvo Sur deshabilitada y sus dos casos integrados del JUnit están omitidos; sus pruebas propias originales y sintéticas están descritas arriba. Centro tiene la antigüedad de su publicación. El HTTP interno del kit no incorpora TLS ni rotación de credenciales para producción. Ambos integrantes deben revisar y poder explicar el código. El [repositorio de entrega](https://github.com/jodaripaa/hackaton-fesc) ya es público con autorización del usuario; se comprobaron la lectura Git sin credenciales y la descarga del ZIP con HTTP 200. El mínimo total de commits del evento se cumple con contribuciones de Josue. El usuario indicó que Andres hará rework real desde su cuenta; siguen pendientes sus tres commits personales, la confirmación de autoría y su revisión. Repositorio y video deben registrarse antes del 15 de octubre de 2026 a las 15:00, America/Bogota; pitch/Drive, registro y revisión humana siguen pendientes.
+P14 oficial no se ha ejecutado. La carga independiente mantuvo Sur deshabilitada y sus dos casos integrados del JUnit están omitidos; sus pruebas propias originales y sintéticas están descritas arriba. Centro tiene la antigüedad de su publicación. El HTTP interno del kit no incorpora TLS ni rotación de credenciales para producción. Ambos integrantes deben revisar y poder explicar el código. El [repositorio de entrega](https://github.com/jodaripaa/hackaton-fesc) ya es público con autorización del usuario; se comprobaron la lectura Git sin credenciales y la descarga del ZIP con HTTP 200. La [corrección de autoría](docs/authorship-correction.md), solicitada tras aclarar que los cambios pertenecían a Andres, deja cuatro commits con su nombre y conserva los commits restantes de Josue. La revisión personal de ambos sigue pendiente de confirmación. El usuario informó una prórroga hasta el 15 de octubre de 2026 a las 15:30 de Colombia; contrastarla con la plataforma. Pitch/Drive y registro de enlaces siguen pendientes.

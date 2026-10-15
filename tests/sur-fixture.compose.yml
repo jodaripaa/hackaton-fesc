@@ -13,3 +13,6 @@ services:
     depends_on:
       sur-fixture:
         condition: service_started
+  tests:
+    environment:
+      SUR_FIXTURE_URL: http://sur-fixture:9004

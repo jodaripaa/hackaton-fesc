@@ -26,6 +26,14 @@ Los registros describen trabajo observado o comunicado por el coordinador durant
 - Qué produjo: serializadores y redacción de logs, errores con códigos fijos, esquemas de salida permitidos y cuatro cajas configuradas con referencias a variables.
 - Qué modificó o corrigió el equipo: Durante la sesión, el agente eliminó URL, encabezados y payloads de los logs, ocultó mensajes internos de errores y resolvió los orígenes desde configuración. Las pruebas base_logs_no_registran_documento_tokens_url_ni_payload y config_no_filtra_urls_ni_credenciales_en_errores aparecen aprobadas en el reporte de base; falta la revisión humana final.
 
+## Uso 4
+
+- Herramienta: Codex.
+- Para qué se usó: corregir la autoría de contribuciones identificadas por el usuario y ampliar las comprobaciones de Sur.
+- Prompt principal (resumido): corregir a Andres las contribuciones de pruebas, rendimiento y seguridad registradas por error con la cuenta de Josue.
+- Qué produjo: respaldo verificable, corrección de cuatro autores con árboles y fechas originales conservados, registro de trazabilidad y cuatro pruebas nuevas con HTTP sintético de Sur, dominio, seguridad y rutas reales.
+- Qué modificó o corrigió el equipo: El usuario aclaró la procedencia de las contribuciones y confirmó los ámbitos pruebas, rendimiento y seguridad. El agente limitó la corrección a esos commits y verificó la igualdad del árbol. Las cuatro pruebas nuevas pasaron localmente y dentro de Docker. Tras un 503 y un timeout SQL en la primera suite, el agente limitó los procesos del runner a dos sin relajar los presupuestos de la API; la repetición aprobó 173 pruebas, cero fallos y dos omitidas. La revisión personal de los integrantes sigue pendiente.
+
 ## Verificación y revisión pendiente
 
 La documentación contrastó estos mecanismos con src/app.ts, src/config/index.ts, los esquemas y el JUnit generado en test-results/junit.xml. El [resumen conservado](docs/evidence/tests-summary.json) registra 165 casos aprobados, cero fallidos y dos omitidos de Sur, incluidos los cinco nombres de seguridad. El [primer intento fallido](docs/evidence/load-test.failed-2026-10-14T16-18-51.json) se interrumpió por GET 503. Después de separar la lectura pública y los parciales del worker, la [repetición](docs/evidence/load-test.json) verificó 10000 filas sin errores en 62,658 segundos. El [arranque limpio](docs/evidence/clean-start.json) aprobó con .env.example sin cambios tras repetir un build por timeout TLS del registro. Josue y Andres deben ejecutar, explicar y revisar los módulos antes de entregar; no se declara que esa revisión humana ya ocurrió.

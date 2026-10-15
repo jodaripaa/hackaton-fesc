@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-15T20:17:33.365Z",
+  "source": "wholly synthetic REST Sur fixture",
+  "configurationOnly": true,
+  "checks": [
+    "positive membership through complete service",
+    "minimum v1 DTO",
+    "v2 category mapping",
+    "normalization",
+    "own caja exclusion",
+    "synthetic Sur down prevents false negative within deadline",
+    "synthetic Sur slow prevents false negative within deadline",
+    "Sur consumer excludes its own unavailable origin",
+    "synthetic Sur recovers after chaos"
+  ],
+  "passed": 9,
+  "officialP14Executed": false
+}

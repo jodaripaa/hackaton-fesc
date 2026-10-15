@@ -1,0 +1,118 @@
+{
+  "recordedAt": "2026-10-15T20:26:32.700337+00:00",
+  "before": "6b75d72b82e5abe1c05cdffe12c3950855ad1d6f",
+  "normalizedHeadBeforeAuditRecord": "218ad3bb80a62a51aedf1f3063f033e33ea1af0c",
+  "sourceTreeUnchangedBeforeAuditRecord": true,
+  "technicalCommits": 16,
+  "andresCommits": 4,
+  "authorIdentitiesAndDatesPreservedForTechnicalCommits": true,
+  "commits": [
+    {
+      "original": "6d94165c581858485bfd4df7a509216af8239e58",
+      "current": "502244ae5d06f4fc1210a112f472070186543365",
+      "title": "Importación inicial del proyecto",
+      "documentationGrouped": []
+    },
+    {
+      "original": "b7dee66c841abf13e184ec08f6a8e5ce3dc1f13c",
+      "current": "fd59f36cc75f5509eaa6e21e5563efbfb29370e2",
+      "title": "Kit Profesional FESC con especificaciones y simuladores originales",
+      "documentationGrouped": []
+    },
+    {
+      "original": "b9a6130e9ea50d4c256bd3857d9db9bc0f159c4c",
+      "current": "f9b31e135be8d434fe88700dd0b7730a47303174",
+      "title": "Base de Caja Link con contratos configuración y persistencia",
+      "documentationGrouped": [
+        "9e4b7a90b8dee1cc7a1e7bbaffdc2e46782b9399"
+      ]
+    },
+    {
+      "original": "73bfb16b3e0e70a04659861f342b73809ded89a7",
+      "current": "48e6a86644533334c6491eb0ab8deb181948c96a",
+      "title": "Dependencias fijadas para SOAP CSV y carga multipart",
+      "documentationGrouped": []
+    },
+    {
+      "original": "7e17aca278e5392c1f6ada5c07b5a3a86cd3d90b",
+      "current": "48fc97cd152f94dc191cab7a7fdf6b465a6cb397",
+      "title": "Arranque reproducible del kit e insumos de pruebas en Docker",
+      "documentationGrouped": []
+    },
+    {
+      "original": "41b2c062035d9afa46d9981e926a1a0a9ea64431",
+      "current": "f54176f7ca59a28d65f9f2e02d52b81f35083f0f",
+      "title": "Adaptadores REST SOAP y Centro con límites y cancelación",
+      "documentationGrouped": []
+    },
+    {
+      "original": "cc1fa42e282bfc377c734f7b69ec59a10cb5a9c6",
+      "current": "1c6e8e25b063feadfcdb442ddb51582d11350e05",
+      "title": "Consultas versionadas con vigencias exclusión y tolerancia a fallas",
+      "documentationGrouped": []
+    },
+    {
+      "original": "ebf9ce6be3cfbbb946f9faf81879785454e6e1aa",
+      "current": "029f9e5b631ee90a69b1476358efaaa30986e1df",
+      "title": "Autenticación por consumidor y auditoría SQL enmascarada",
+      "documentationGrouped": []
+    },
+    {
+      "original": "91aa9d75cb563c67493b6cb83e3fdcbeb8d45d13",
+      "current": "e06c6a5e48259025fad7df9019f32415746be82a",
+      "title": "Lotes CSV persistentes con idempotencia y recuperación",
+      "documentationGrouped": []
+    },
+    {
+      "original": "2e316ebb7bcd051b6397fae91c26df2010e71446",
+      "current": "7239683553a84979ce30c789cadc7f3878abe3b4",
+      "title": "Integración de adaptadores consultas auditoría y procesamiento de lotes",
+      "documentationGrouped": []
+    },
+    {
+      "original": "3e190702a037d1c350616ed2cf0d04133b774a62",
+      "current": "3a63736287496862ee45c2224712a43fb878ed43",
+      "title": "Pruebas de contrato seguridad carga e integridad de resultados",
+      "documentationGrouped": []
+    },
+    {
+      "original": "1eef656389ff78d767c5948c006409741bc75dfc",
+      "current": "2e3ef42c2686db5254d03b6ca5d1ce89628592d6",
+      "title": "Optimización de consultas de estado para lotes grandes",
+      "documentationGrouped": []
+    },
+    {
+      "original": "0154d679c9b695a0c2e26d2912b0912cb408b6d6",
+      "current": "939619c3a63e80c7b9d136998fb0d0ee114b44fe",
+      "title": "Validación de afiliaciones de Sur con fixture HTTP sintético",
+      "documentationGrouped": []
+    },
+    {
+      "original": "3c13d9ca6ff1b37ac955fa01e53ccb7a252aca06",
+      "current": "42c35c7da7d3fb2c3c5dcb8328b49d697808dd37",
+      "title": "Comprobación de Sur en Docker mediante configuración",
+      "documentationGrouped": [
+        "57a287821f389ae34fded9af60da1c9f5a6eab57",
+        "be880c805cbad7301a31930fabc1dab616b8633c",
+        "e163c388bbf3b3c94e0b192c83167664b33c456f",
+        "96b6f52bcfceb2f2922fe68340ac87dbb5ac35d8",
+        "5862b07aba0b2b21229095d9eafffdb8a98adfe2"
+      ]
+    },
+    {
+      "original": "f98ff713271c52b739d6a121617d05db2573e3b9",
+      "current": "4a5462f2f82fe0e53cab2b41d57bc2f61f18820d",
+      "title": "Contrato automatizado de Sur y concurrencia controlada de pruebas",
+      "documentationGrouped": []
+    },
+    {
+      "original": "e10c88ec14333f7761dc2c25c870c6882cdfd728",
+      "current": "218ad3bb80a62a51aedf1f3063f033e33ea1af0c",
+      "title": "Pruebas de caída lentitud exclusión y recuperación de Sur",
+      "documentationGrouped": [
+        "6284a7af9412b7f9860489809fe182d30a96df8c",
+        "6b75d72b82e5abe1c05cdffe12c3950855ad1d6f"
+      ]
+    }
+  ]
+}
