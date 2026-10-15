@@ -1,0 +1,30 @@
+{
+  "capturedAt": "2026-10-15T20:17:13.232530+00:00",
+  "command": "docker compose --profile test run --rm --build -e TEST_ENABLE_CHAOS=true tests",
+  "junitCases": 171,
+  "junitPassed": 169,
+  "junitFailed": 0,
+  "junitSkipped": 2,
+  "nodeTestsPassed": 173,
+  "nodeTestsSkipped": 2,
+  "sourceFilesSha256": {
+    "tests/unit/sur-contract.test.ts": "6c701ca460c792cbf0058efe7741c3f2a66e335afad0e20d590ffad6b512f346",
+    "scripts/test-junit.mjs": "6441ff4eb9d620559d97efd109e4187254365ace3413d44d94e27ba961df734e"
+  },
+  "syntheticSurTestsPassed": [
+    "sur_configuracion_habilita_cuarta_caja_al_recrear_aplicacion",
+    "sur_http_conserva_v1_normaliza_v2_y_audita_sin_documento_completo",
+    "sur_caida_y_lentitud_no_producen_falso_negativo_y_se_recuperan",
+    "sur_consumidor_excluye_su_origen_incluso_cuando_falla"
+  ],
+  "initialAttempt": {
+    "nodePassed": 171,
+    "nodeFailed": 2,
+    "nodeSkipped": 2,
+    "failures": [
+      "integration purpose received HTTP 503",
+      "PostgreSQL test read timeout"
+    ]
+  },
+  "repeatChange": "Bound runner to two concurrent suite processes; API budgets and assertions unchanged"
+}

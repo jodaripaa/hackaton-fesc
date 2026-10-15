@@ -18,7 +18,9 @@ for (const suite of ['unit', 'integration']) {
   }
 }
 const child = spawn(process.execPath, [
-  '--test', '--test-reporter=spec', '--test-reporter-destination=stdout',
+  // Bound suite processes so fixture servers and PostgreSQL retain CPU capacity.
+  // Per-test concurrency and API deadlines are still checked without relaxation.
+  '--test', '--test-concurrency=2', '--test-reporter=spec', '--test-reporter-destination=stdout',
   '--test-reporter=junit', `--test-reporter-destination=${join(directory, 'junit.xml')}`, ...files,
 ], { stdio: 'inherit', env: process.env });
 child.once('error', () => { process.stderr.write('No se pudo iniciar el runner de pruebas.\n'); process.exitCode = 1; });
